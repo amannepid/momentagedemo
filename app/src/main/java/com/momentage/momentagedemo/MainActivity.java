@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 
         if (entry != null) {
             try {
-                String data = new String(entry.data, "UTF-8");
+                String data = new String(entry.data, Constants.UTF_8_FILE_FORMAT);
                 try {
                     parseMomentJSON(new JSONObject(data));
                 } catch (JSONException e) {
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.d(MomentageApplication.TAG,
-"Response: " + response.toString());
+                            "Response: " + response.toString());
                     if (response != null) {
                         parseMomentJSON(response);
                     }
@@ -89,23 +89,23 @@ public class MainActivity extends Activity {
                 JSONObject momentObj = (JSONObject) momentsArray.get(i);
 
                 Moment moment = new Moment();
-                moment.setMomentTitle(momentObj.getString("title"));
-                moment.setMomentDesc(momentObj.getString("description"));
+                moment.setMomentTitle(momentObj.getString(Constants.M_TITLE));
+                moment.setMomentDesc(momentObj.getString(Constants.M_DESCRIPTION));
 
-                JSONObject userObj = momentObj.getJSONObject("user");
-                moment.setUserName(userObj.getString("username"));
-                moment.setProfilePicURL(userObj.getString("avatar"));
-                moment.setBackgroundURL(userObj.getString("background"));
+                JSONObject userObj = momentObj.getJSONObject(Constants.M_USER);
+                moment.setUserName(userObj.getString(Constants.M_USERNAME));
+                moment.setProfilePicURL(userObj.getString(Constants.M_AVATAR));
+                moment.setBackgroundURL(userObj.getString(Constants.M_BACKGROUND));
 
-                JSONArray momentItems = momentObj.getJSONArray("moment_items");
-                for(int x = 0; x < momentItems.length(); x++){
+                JSONArray momentItems = momentObj.getJSONArray(Constants.M_ITEMS);
+                for (int x = 0; x < momentItems.length(); x++) {
                     JSONObject itemObj = (JSONObject) momentItems.get(x);
 
-                    if(itemObj.getString("item_type").equalsIgnoreCase("photo")){
-                        moment.setPhotoCount(moment.getPhotoCount()+ 1);
-                    } else if(itemObj.getString("item_type").equalsIgnoreCase("audio")){
+                    if (itemObj.getString(Constants.M_ITEM_TYPE).equalsIgnoreCase(Constants.M_ITEM_TYPE_PHOTO)) {
+                        moment.setPhotoCount(moment.getPhotoCount() + 1);
+                    } else if (itemObj.getString(Constants.M_ITEM_TYPE).equalsIgnoreCase(Constants.M_ITEM_TYPE_AUDIO)) {
                         moment.setAudioCount(moment.getAudioCount() + 1);
-                    } else if (itemObj.getString("item_type").equalsIgnoreCase("video")){
+                    } else if (itemObj.getString(Constants.M_ITEM_TYPE).equalsIgnoreCase(Constants.M_ITEM_TYPE_VIDEO)) {
                         moment.setVideoCount(moment.getVideoCount() + 1);
                     }
                 }
@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
